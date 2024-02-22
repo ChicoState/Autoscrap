@@ -1,3 +1,5 @@
 # Ignore contents of the privatekeys folder
 privatekeys/*
 !privatekeys/README.md
+
+node_modules/
