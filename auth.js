@@ -18,6 +18,14 @@ const init = (app) => {
 	});
 }
 
+const addUser = async (username, password) => {
+	const newUser = await db.collection('users').add({
+		username: username,
+		password: password
+	});
+	return newUser;
+}
+
 const getUser = async (username, password=null) => {
 	const users = await db.collection('users').get();
 	for (const user of users.docs) {
@@ -31,11 +39,19 @@ const getUser = async (username, password=null) => {
 	return null;
 }
 
-const signup = (req, res) => {
+const signup = async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	console.log('Signed up with username ' + username + ' and password ' + password);
-	// later this will login and redirect to /browse
+	const user = await getUser(username);
+
+	if (user) {
+		console.log('Failed to sign up, username ' + username + ' already exists.');
+	} else {
+		const newUser = await addUser(username, password);
+		console.log('Signed up with username ' + username + ' and password ' + password);
+		req.session.userId = newUser.id;
+		res.redirect('/browse');
+	}
 }
 
 const signin = async (req, res) => {
