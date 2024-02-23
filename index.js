@@ -17,6 +17,8 @@ app.post('/signup', (req, res) => auth.signup(req, res));
 
 app.post('/signout', (req, res) => auth.signout(req, res));
 
+app.get('/about', (req, res) => res.render('about'));
+
 app.get('*', (req, res) => res.redirect('/signin'));
 
 app.listen(port, () => {
