@@ -1,4 +1,5 @@
 const session = require('express-session');
+const db = require('./firebase');
 
 const init = (app) => {
 	app.use(session({
@@ -17,21 +18,54 @@ const init = (app) => {
 	});
 }
 
-const signup = (req, res) => {
-	const username = req.body.username;
-	const password = req.body.password;
-	console.log('Signed up with username ' + username + ' and password ' + password);
-	// later this will login and redirect to /browse
+const addUser = async (username, password) => {
+	const newUser = await db.collection('users').add({
+		username: username,
+		password: password
+	});
+	return newUser;
 }
 
-const signin = (req, res) => {
+const getUser = async (username, password=null) => {
+	const users = await db.collection('users').get();
+	for (const user of users.docs) {
+		const data = user.data();
+		if (data.username === username &&
+		   (password === null || data.password == password))
+		{
+			return user;
+		}
+	}
+	return null;
+}
+
+const signup = async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	console.log('Signed in with username ' + username + ' and password ' + password);
+	const user = await getUser(username);
 
-	// session id is arbitrary... for now
-	req.session.userId = 1;
-	res.redirect('/browse');
+	if (user) {
+		console.log('Failed to sign up, username ' + username + ' already exists.');
+	} else {
+		const newUser = await addUser(username, password);
+		console.log('Signed up with username ' + username + ' and password ' + password);
+		req.session.userId = newUser.id;
+		res.redirect('/browse');
+	}
+}
+
+const signin = async (req, res) => {
+	const username = req.body.username;
+	const password = req.body.password;
+	const user = await getUser(username, password);
+
+	if (user) {
+		console.log('Signed in with username ' + username + ' and password ' + password);
+		req.session.userId = user.id;
+		res.redirect('/browse');
+	} else {
+		console.log('Failed to sign in with username ' + username + ' and password ' + password);
+	}		
 }
 
 const signout = (req, res) => {
