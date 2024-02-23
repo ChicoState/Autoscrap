@@ -1,4 +1,5 @@
 const session = require('express-session');
+const db = require('./firebase');
 
 const init = (app) => {
 	app.use(session({
@@ -17,6 +18,19 @@ const init = (app) => {
 	});
 }
 
+const getUser = async (username, password=null) => {
+	const users = await db.collection('users').get();
+	for (const user of users.docs) {
+		const data = user.data();
+		if (data.username === username &&
+		   (password === null || data.password == password))
+		{
+			return user;
+		}
+	}
+	return null;
+}
+
 const signup = (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
@@ -24,14 +38,18 @@ const signup = (req, res) => {
 	// later this will login and redirect to /browse
 }
 
-const signin = (req, res) => {
+const signin = async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	console.log('Signed in with username ' + username + ' and password ' + password);
+	const user = await getUser(username, password);
 
-	// session id is arbitrary... for now
-	req.session.userId = 1;
-	res.redirect('/browse');
+	if (user) {
+		console.log('Signed in with username ' + username + ' and password ' + password);
+		req.session.userId = user.id;
+		res.redirect('/browse');
+	} else {
+		console.log('Failed to sign in with username ' + username + ' and password ' + password);
+	}		
 }
 
 const signout = (req, res) => {
