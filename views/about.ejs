@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <em>Variant: <%= typeof variant != 'undefined' ? variant : 'default' %></em>
+    <a class="navbar-brand" href="/browse">Browse</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About</a>
+      </li>
+    </ul>
+  </nav>
+
+<html>
+        <h1>About</h1>
+        <form action="/signout" method="POST">
+        <ul>
+                <p>Autoscrap is a website design to sell and buy car parts.</p>
+                <p>1. Is Autoscrap available within my community?</p>
+        <p>Autoscrap is a slowly startup websites that will try to be implement later in communities.</p>
+        </ul>
+        <button type="submit">Sign out</button>
+        </form>
+</html>
