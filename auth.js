@@ -39,10 +39,7 @@ const getUser = async (username, password=null) => {
 	return null;
 }
 
-const getListings = async () => {
-    const snapshot = await db.collection('listings').get();
-    return snapshot.docs.map(doc => doc.data());
-  }
+
 
 const signup = async (req, res) => {
 	const username = req.body.username;
@@ -55,8 +52,7 @@ const signup = async (req, res) => {
 		const newUser = await addUser(username, password);
 		console.log('Signed up with username ' + username + ' and password ' + password);
 		req.session.userId = newUser.id;
-        const listings = await getListings();
-		res.render('browse', { listings });
+		res.redirect('/browse');
 	}
 }
 
@@ -68,8 +64,7 @@ const signin = async (req, res) => {
 	if (user) {
 		console.log('Signed in with username ' + username + ' and password ' + password);
 		req.session.userId = user.id;
-        const listings = await getListings();
-		res.render('browse', { listings });
+		res.redirect('/browse');
 	} else {
 		console.log('Failed to sign in with username ' + username + ' and password ' + password);
 	}		

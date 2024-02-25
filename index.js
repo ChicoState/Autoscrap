@@ -8,13 +8,15 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
 auth.init(app);
 
-db.collection('listings').get()
-  .then(snapshot => {
-    const listings = snapshot.docs.map(doc => doc.data());
-    app.get('/browse', (req, res) => res.render('browse', { listings }));
-  })
-//app.get('/browse', (req, res) => res.render('browse'));
+const getListings = async () => {
+    const snapshot = await db.collection('listings').get();
+    return snapshot.docs.map(doc => doc.data());
+  }
 
+app.get('/browse', async (req, res) => {
+    const listings = await getListings();
+    res.render('browse', { listings });
+});
 app.get('/signin', (req, res) => res.render('signin'));
 app.post('/signin', (req, res) => auth.signin(req, res));
 
