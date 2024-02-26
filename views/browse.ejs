@@ -1,11 +1,42 @@
 <html>
-	<h1>Browsing...</h1>
-	<form action="/signout" method="POST">
-	<ul>
-		<% for (let i = 0; i < 10; i++) { %>
-			<li>item <%= i%></li>
-		<% } %>
-	</ul>
-	<button type="submit">Sign out</button>
-	</form>
+    <head>
+        <style>
+            .listing-tile {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .listing-image {
+                flex: 0 0 20%;
+            }
+            .listing-image img {
+                width: 200px;
+                height: 200px;
+            }
+            .listing-details {
+                flex: 0 0 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Browsing...</h1>
+        <form action="/signout" method="POST">
+            <ul>
+                <% for (let i = 0; i < 10 && i < listings.length; i++) { %>
+                    <li class="listing-tile">
+                        <div class="listing-image">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/800px-GitHub_Invertocat_Logo.svg.png" alt="Listing Image">
+                        </div>
+                        <div class="listing-details">
+                            <h2><%= listings[i].title %></h2>
+                            <p><%= listings[i].description %></p>
+                            <p>$<%= listings[i].price %></p>
+                        </div>
+                    </li>
+                <% } %>
+            </ul>
+            <button type="submit">Sign out</button>
+        </form>
+    </body>
 </html>
+
+

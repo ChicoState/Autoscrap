@@ -39,6 +39,8 @@ const getUser = async (username, password=null) => {
 	return null;
 }
 
+
+
 const signup = async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
