@@ -21,8 +21,14 @@ const handleCreatePost = async (req, res) => {
 	res.redirect('/browse'); // later, this should redirect to the page that views the newly-made post
 }
 
+const getPosts = async () => {
+    const snapshot = await db.collection('posts').get();
+    return snapshot.docs.map(doc => doc.data());
+}
+
 module.exports = {
 	handleCreatePost,
-	createPost
+	createPost,
+    getPosts
 };
 

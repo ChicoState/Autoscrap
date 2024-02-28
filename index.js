@@ -9,14 +9,11 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
 auth.init(app);
 
-const getListings = async () => {
-    const snapshot = await db.collection('listings').get();
-    return snapshot.docs.map(doc => doc.data());
-  }
+
 
 app.get('/browse', async (req, res) => {
-    const listings = await getListings();
-    res.render('browse', { listings });
+    const posts = await postManager.getPosts();
+    res.render('browse', { posts });
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));
