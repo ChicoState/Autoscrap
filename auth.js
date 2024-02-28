@@ -1,5 +1,5 @@
 const session = require('express-session');
-const db = require('./firebase');
+const userManager = require('./userManager');
 
 const init = (app) => {
 	app.use(session({
@@ -18,38 +18,15 @@ const init = (app) => {
 	});
 }
 
-const addUser = async (username, password) => {
-	const newUser = await db.collection('users').add({
-		username: username,
-		password: password
-	});
-	return newUser;
-}
-
-const getUser = async (username, password=null) => {
-	const users = await db.collection('users').get();
-	for (const user of users.docs) {
-		const data = user.data();
-		if (data.username === username &&
-		   (password === null || data.password == password))
-		{
-			return user;
-		}
-	}
-	return null;
-}
-
-
-
 const signup = async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	const user = await getUser(username);
+	const user = await userManager.getUser(username);
 
 	if (user) {
 		console.log('Failed to sign up, username ' + username + ' already exists.');
 	} else {
-		const newUser = await addUser(username, password);
+		const newUser = await userManager.addUser(username, password);
 		console.log('Signed up with username ' + username + ' and password ' + password);
 		req.session.userId = newUser.id;
 		res.redirect('/browse');
@@ -59,7 +36,7 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	const user = await getUser(username, password);
+	const user = await userManager.getUser(username, password);
 
 	if (user) {
 		console.log('Signed in with username ' + username + ' and password ' + password);

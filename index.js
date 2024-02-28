@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('./auth');
+const postManager = require('./postManager');
 const db = require('./firebase');
 const app = express();
 const port = 8080;
@@ -8,15 +9,16 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
 auth.init(app);
 
-const getListings = async () => {
-    const snapshot = await db.collection('listings').get();
-    return snapshot.docs.map(doc => doc.data());
-  }
+
 
 app.get('/browse', async (req, res) => {
-    const listings = await getListings();
-    res.render('browse', { listings });
+    const posts = await postManager.getPosts();
+    res.render('browse', { posts });
 });
+
+app.get('/createPost', (req, res) => res.render('createPost'));
+app.post('/createPost', (req, res) => postManager.handleCreatePost(req, res));
+
 app.get('/signin', (req, res) => res.render('signin'));
 app.post('/signin', (req, res) => auth.signin(req, res));
 
