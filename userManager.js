@@ -1,5 +1,6 @@
 const db = require('./firebase');
 
+
 const addUser = async (username, password) => {
 	const newUser = await db.collection('users').add({
 		username: username,
@@ -21,7 +22,20 @@ const getUser = async (username, password=null) => {
 	return null;
 }
 
+const getUsername = async (userID) => {
+	const users = await db.collection('users').get();
+	for (const user of users.docs) {
+		const data = user.data();
+		if (data.userID === userID )
+		{
+			return data.username;
+		}
+	}
+	return null;
+}
+
 module.exports = { 
 	addUser,
-	getUser
+	getUser,
+	getUsername,
 };

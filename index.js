@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = require('./auth');
 const postManager = require('./postManager');
+const userManager = require('./userManager');
 const db = require('./firebase');
 const app = express();
 const port = 8080;
@@ -15,6 +16,11 @@ app.get('/browse', async (req, res) => {
     const posts = await postManager.getPosts();
     res.render('browse', { posts });
 });
+
+app.get('/account', async (req, res) => {
+    const username = await userManager.getUsername(req.session.userID);
+    res.render('account', { userID : username });
+})
 
 app.get('/createPost', (req, res) => res.render('createPost'));
 app.post('/createPost', (req, res) => postManager.handleCreatePost(req, res));
