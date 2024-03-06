@@ -1,7 +1,6 @@
 const express = require('express');
 const auth = require('./auth');
 const postManager = require('./postManager');
-const db = require('./firebase');
 const app = express();
 const port = 8080;
 

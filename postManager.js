@@ -22,7 +22,7 @@ const handleCreatePost = async (req, res) => {
 }
 
 const getPosts = async () => {
-    const snapshot = await db.collection('posts').get();
+    const snapshot = await db.collection('posts').orderBy('unixTime', 'desc').get();
     return snapshot.docs.map(doc => doc.data());
 }
 
