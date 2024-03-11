@@ -94,8 +94,13 @@
 
         <h1>Browsing <%= total %> Posts...</h1>
             <ul>
-                <a href="/browse?page=<%= page - 1 %>&limit=10">Previous</a>
-                <a href="/browse?page=<%= page + 1 %>&limit=10">Next</a>
+                <% if (page > 1) { %>
+                    <a href="/browse?page=<%= page - 1 %>&limit=10">Last Page</a>
+                <% } %>
+                <%= page %>
+                <% if (page < (total/limit)) { %>
+                    <a href="/browse?page=<%= page + 1 %>&limit=10">Next Page</a>
+                <% } %>
                 <% for (let i = 0; i < posts.length; i++) { %>
                     <li class="listing-tile">
                         <div class="listing-image">
@@ -108,8 +113,13 @@
                         </div>
                     </li>
                 <% } %>
-                <a href="/browse?page=<%= page - 1 %>&limit=10">Last Page</a>
-                <a href="/browse?page=<%= page + 1 %>&limit=10">Next Page</a>
+                <% if (page > 1) { %>
+                    <a href="/browse?page=<%= page - 1 %>&limit=10">Last Page</a>
+                <% } %>
+                <%= page %>
+                <% if (page < (total/limit)) { %>
+                    <a href="/browse?page=<%= page + 1 %>&limit=10">Next Page</a>
+                <% } %>
             </ul>
 
         <h2 class="f1">

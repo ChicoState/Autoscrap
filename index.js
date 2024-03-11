@@ -16,7 +16,7 @@ app.get('/browse', async (req, res) => {
     let offset = (page - 1) * limit;
     const posts = await postManager.getPosts(limit, offset);
     const total = await postManager.getPostsTotal();
-    res.render('browse', { posts: posts, page: 0, total: total });
+    res.render('browse', { posts: posts, page: page, limit:limit, total: total });
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));
