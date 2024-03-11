@@ -92,9 +92,11 @@
             </form>
         </nav>
 
-        <h1>Browsing...</h1>
+        <h1>Browsing <%= total %> Posts...</h1>
             <ul>
-                <% for (let i = 0; i < 10 && i < posts.length; i++) { %>
+                <a href="/browse?page=<%= page - 1 %>&limit=10">Previous</a>
+                <a href="/browse?page=<%= page + 1 %>&limit=10">Next</a>
+                <% for (let i = 0; i < posts.length; i++) { %>
                     <li class="listing-tile">
                         <div class="listing-image">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/800px-GitHub_Invertocat_Logo.svg.png" alt="Listing Image">
@@ -106,6 +108,8 @@
                         </div>
                     </li>
                 <% } %>
+                <a href="/browse?page=<%= page - 1 %>&limit=10">Last Page</a>
+                <a href="/browse?page=<%= page + 1 %>&limit=10">Next Page</a>
             </ul>
 
         <h2 class="f1">

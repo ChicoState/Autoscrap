@@ -11,8 +11,12 @@ auth.init(app);
 
 
 app.get('/browse', async (req, res) => {
+    let page = req.query.page ? parseInt(req.query.page) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    let skip = (page - 1) * limit;
     const posts = await postManager.getPosts();
-    res.render('browse', { posts });
+    const total = posts.length;
+    res.render('browse', { posts: posts, page: 0, total: total });
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));
