@@ -1,7 +1,6 @@
 const express = require('express');
 const auth = require('./auth');
 const postManager = require('./postManager');
-const db = require('./firebase');
 const app = express();
 const port = 8080;
 
@@ -12,8 +11,12 @@ auth.init(app);
 
 
 app.get('/browse', async (req, res) => {
-    const posts = await postManager.getPosts();
-    res.render('browse', { posts });
+    let page = req.query.page ? parseInt(req.query.page) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    let offset = (page - 1) * limit;
+    const posts = await postManager.getPosts(limit, offset);
+    const total = await postManager.getPostsTotal();
+    res.render('browse', { posts: posts, page: page, limit:limit, total: total });
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));

@@ -21,14 +21,20 @@ const handleCreatePost = async (req, res) => {
 	res.redirect('/browse'); // later, this should redirect to the page that views the newly-made post
 }
 
-const getPosts = async () => {
-    const snapshot = await db.collection('posts').get();
+const getPosts = async (limit, offset) => {
+    const snapshot = await db.collection('posts').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
     return snapshot.docs.map(doc => doc.data());
+}
+
+const getPostsTotal = async () => {
+    const snapshot = await db.collection('posts').get();
+    return snapshot.size;
 }
 
 module.exports = {
 	handleCreatePost,
 	createPost,
-    getPosts
+    getPosts,
+    getPostsTotal
 };
 
