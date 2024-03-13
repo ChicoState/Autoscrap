@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('./auth');
+const session = require('express-session');
 const postManager = require('./postManager');
 const userManager = require('./userManager');
 const db = require('./firebase');
@@ -10,17 +11,19 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
 auth.init(app);
 
-
-
 app.get('/browse', async (req, res) => {
-    const posts = await postManager.getPosts();
-    res.render('browse', { posts });
+    let page = req.query.page ? parseInt(req.query.page) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    let offset = (page - 1) * limit;
+    const posts = await postManager.getPosts(limit, offset);
+    const total = await postManager.getPostsTotal();
+    res.render('browse', { posts: posts, page: page, limit:limit, total: total });
 });
 
 app.get('/account', async (req, res) => {
-    const username = await userManager.getUsername(req.session.userID);
-    res.render('account', { userID : username });
-})
+    const username = await userManager.getUsernamebyID(req.session.userId);
+    res.render('account', { username : username });
+});
 
 app.get('/createPost', (req, res) => res.render('createPost'));
 app.post('/createPost', (req, res) => postManager.handleCreatePost(req, res));
