@@ -22,11 +22,11 @@ const getUser = async (username, password=null) => {
 	return null;
 }
 
-const getUsername = async (userID) => {
+const getUsernamebyID = async ( userID ) => {
 	const users = await db.collection('users').get();
 	for (const user of users.docs) {
 		const data = user.data();
-		if (data.userID === userID )
+		if (userID === user.id)
 		{
 			return data.username;
 		}
@@ -34,8 +34,9 @@ const getUsername = async (userID) => {
 	return null;
 }
 
+
 module.exports = { 
 	addUser,
 	getUser,
-	getUsername,
+	getUsernamebyID
 };
