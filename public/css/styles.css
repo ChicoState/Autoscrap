@@ -1,0 +1,115 @@
+/* global styles */
+body {
+	font-family: Arial, sans-serif;
+	padding-top: 100px; /* offset for header navbar */
+}
+
+form h1 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+form {
+	max-width: 400px;
+	margin: 100px auto;
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+form input[type="text"] {
+	width: 100%;
+	padding: 10px 10px 10px 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+form .button {
+	text-align: center;
+	box-sizing: border-box;
+	width: 100%;
+	display: block;
+	margin-bottom: 10px;
+	padding: 10px 10px 10px 10px;
+	font-size: 16px;
+	background-color: #eeeeee;
+	color: #000000;
+	text-decoration: none;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+form .button:hover {
+	background-color: #ffa500;
+	color: #ffffff;
+}
+
+/* browse styles */
+.listings {
+	list-style: none;
+	padding: 0;
+}
+
+.listing-tile {
+	display: flex;
+	transition: transform 0.3s, box-shadow 0.3s;
+	margin: 20px 40px 20px 40px;
+}
+
+.listing-tile:hover {
+	transform: scale(1.05);
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+}
+
+.listing-image {
+	width: 200px;
+	height: auto;
+}
+
+/* header navbar styles */
+.navbar-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #eeeeee;
+	padding: 10px 0;
+	z-index: 9999;
+}
+
+.navbar-header h2 {
+	color: #ffa500;
+	margin-left: 20px;
+	padding: 0;
+}
+
+.navbar-header a {
+	color: #000000;
+	text-decoration: none;
+	margin: 0px 10px;
+	padding: 8px 15px;
+	transition: background-color 0.3s ease;
+}
+
+.navbar-header a:hover {
+	background-color: #ffa500;
+	color: #ffffff;
+}
+
+/* footer styles */
+
+.footer-info {
+	padding: 0;
+	margin-left 20px;
+	width: 100%;
+}}
+
