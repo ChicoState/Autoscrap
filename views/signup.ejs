@@ -1,12 +1,19 @@
 <html>
-	<h1>Sign up:</h1>
+<head>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
 	<form action="/signup" method="POST">
+		<h1>Sign up</h1>
 		<label for="username">Username:</label>
-		<input id="username" name="username" type="text"></input>
+		<input name="username" type="text"></input>
 		<label for="password">Password:</label>
-		<input id="password" name="password" type="text"></input>
-		<button type="submit">Sign up</button>
+		<input name="password" type="text"></input>
+		<button class="button" type="submit">Sign up</button>
+		<a class="button" href="/signin">Already have an account? Sign in!</a>
 	</form>
 
-	<a href="/signin">Already have an account? Sign in!</a>
+</body>
+
 </html>
