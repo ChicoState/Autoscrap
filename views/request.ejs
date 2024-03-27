@@ -1,0 +1,36 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<%- include('./partials/header.ejs') %>
+
+	<h1>Browsing <%= total %> Request...</h1>
+	<ul class="listings">
+		<% if (page > 1) { %>
+                	<a href="/request?page=<%= page - 1 %>&limit=10">Last Page</a>
+                <% } %>
+                <% if (page < (total/limit)) { %>
+                    	<a href="/request?page=<%= page + 1 %>&limit=10">Next Page</a>
+                <% } %>
+                <% for (let i = 0; i < requests.length; i++) { %>
+						<li class="listing-tile">
+                        	<div class="listing-details">
+                            		<h2><%= requests[i].title %></h2>
+                            		<p><%= requests[i].description %></p>
+                            		<p>$<%= requests[i].currentBid %></p>
+                        	</div>
+                    	</li>
+                <% } %>
+                <% if (page > 1) { %>
+			<a href="/request?page=<%= page - 1 %>&limit=10">Last Page</a>
+                <% } %>
+                <% if (page < (total/limit)) { %>
+			<a href="/request?page=<%= page + 1 %>&limit=10">Next Page</a>
+                <% } %>
+	</ul>
+	
+	<%- include('./partials/footer.ejs') %>
+</body>
+</html>
