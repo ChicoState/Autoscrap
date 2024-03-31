@@ -20,25 +20,24 @@ const handleCreatePost = async (req, res) => {
 	const unixTime = Date.now();
     const image = req.file;
 
-    if (!image) {
-        return res.status(400).send('No file uploaded');
+    if (!image) {//use a default image if no image is uploaded
+        await createPost(authorId, currentBid, description, title, unixTime, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/800px-GitHub_Invertocat_Logo.svg.png");
+        res.redirect('/browse');
+    } else {//save image to firebase storage
+        const [file] = await db.storage.bucket().upload(image.path, {
+            metadata: {
+                contentType: image.mimetype,
+            }
+        });
+        const config = {//settings for public link
+            action: 'read',
+            expires: '01-01-2100', //link will be permanently hosted (until 2100)
+        };
+        const [imageLink] = await file.getSignedUrl(config);
+
+        await createPost(authorId, currentBid, description, title, unixTime, imageLink);
+        res.redirect('/browse');
     }
-
-    //save image to firebase storage
-    const [file] = await db.storage.bucket().upload(image.path, {
-        metadata: {
-            contentType: image.mimetype,
-        }
-    });
-
-    const config = {
-        action: 'read',
-        expires: '01-01-2100', //link will be permanently hosted (until 2100)
-    };
-    const [imageLink] = await file.getSignedUrl(config);
-
-	await createPost(authorId, currentBid, description, title, unixTime, imageLink);
-	res.redirect('/browse');
 }
 
 const getPosts = async (limit, offset) => {
