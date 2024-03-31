@@ -25,14 +25,17 @@ const handleCreatePost = async (req, res) => {
     }
 
     //save image to firebase storage
-    const file = await db.storage.bucket().upload(image.path, {
+    const [file] = await db.storage.bucket().upload(image.path, {
         metadata: {
             contentType: image.mimetype,
-            mediaLink: 'public'
         }
     });
-    console.log('file', file)
-    const imageLink = file[0].name;
+
+    const config = {
+        action: 'read',
+        expires: '01-01-2100', //link will be permanently hosted (until 2100)
+    };
+    const [imageLink] = await file.getSignedUrl(config);
 
 	await createPost(authorId, currentBid, description, title, unixTime, imageLink);
 	res.redirect('/browse');
