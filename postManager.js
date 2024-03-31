@@ -1,4 +1,4 @@
-const db = require('./firebase');
+const db = require('./firebase');//holds firestore and storage
 
 const createPost = async (authorId, currentBid, description, title, unixTime, image) => {
 	const newPost = await db.firestore.collection('posts').add({
@@ -18,9 +18,24 @@ const handleCreatePost = async (req, res) => {
 	const description = req.body.description;
 	const title = req.body.title;
 	const unixTime = Date.now();
-    const image = req.body.image;
-	await createPost(authorId, currentBid, description, title, unixTime, image);
-	res.redirect('/browse'); // later, this should redirect to the page that views the newly-made post
+    const image = req.file;
+
+    if (!image) {
+        return res.status(400).send('No file uploaded');
+    }
+
+    //save image to firebase storage
+    const file = await db.storage.bucket().upload(image.path, {
+        metadata: {
+            contentType: image.mimetype,
+            mediaLink: 'public'
+        }
+    });
+    console.log('file', file)
+    const imageLink = file[0].name;
+
+	await createPost(authorId, currentBid, description, title, unixTime, imageLink);
+	res.redirect('/browse');
 }
 
 const getPosts = async (limit, offset) => {
@@ -32,6 +47,8 @@ const getPostsTotal = async () => {
     const snapshot = await db.firestore.collection('posts').get();
     return snapshot.size;
 }
+
+
 
 module.exports = {
 	handleCreatePost,
