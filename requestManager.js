@@ -7,7 +7,6 @@ const createRequest = async (authorId, currentBid, description, title, unixTime)
 		description: description,
 		title: title,
 		unixTime: unixTime,
-		image: image
 	});
 	return newRequest;
 }
@@ -18,25 +17,8 @@ const handleCreateRequest = async (req, res) => {
 	const description = req.body.description;
 	const title = req.body.title;
 	const unixTime = Date.now();
-	const image = req.file;
-
-	if (!image) {//use a default image if no image is uploaded
-        await createRequest(authorId, currentBid, description, title, unixTime, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/800px-GitHub_Invertocat_Logo.svg.png");
-        res.redirect('/request');
-    } else {//save image to firebase storage
-        const [file] = await db.storage.bucket().upload(image.path, {
-            metadata: {
-                contentType: image.mimetype,
-            }
-        });
-    	const config = {//settings for public link
-        	action: 'read',
-        	expires: '01-01-2100', //link will be permanently hosted (until 2100)
-    	};
-    	const [imageLink] = await file.getSignedUrl(config);
-		await createRequest(authorId, currentBid, description, title, unixTime);
-		res.redirect('/request'); // later, this should redirect to the page that views the newly-made post
-	}
+	await createRequest(authorId, currentBid, description, title, unixTime);
+	res.redirect('/request'); // later, this should redirect to the page that views the newly-made post
 }
 
 const getRequests = async (limit, offset) => {
