@@ -6,7 +6,7 @@ const createRequest = async (authorId, currentBid, description, title, unixTime)
 		currentBid: currentBid,
 		description: description,
 		title: title,
-		unixTime: unixTime,
+		unixTime: unixTime
 	});
 	return newRequest;
 }
