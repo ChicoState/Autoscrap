@@ -16,7 +16,7 @@
                 <% } %>
                 <% for (let i = 0; i < posts.length; i++) { %>
                 	<li class="listing-tile">
-                            	<img class="listing-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/800px-GitHub_Invertocat_Logo.svg.png">
+                            <img class="listing-image" src="<%= posts[i].image %>">
                         	<div class="listing-details">
                             		<h2><%= posts[i].title %></h2>
                             		<p><%= posts[i].description %></p>

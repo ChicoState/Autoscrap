@@ -1,8 +1,8 @@
 const express = require('express');
 const auth = require('./auth');
-const session = require('express-session');
 const postManager = require('./postManager');
 const userManager = require('./userManager');
+const upload = require('./fileManager');
 const requestManager = require('./requestManager');
 const db = require('./firebase');
 const app = express();
@@ -37,7 +37,7 @@ app.get('/account', async (req, res) => {
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));
-app.post('/createPost', (req, res) => postManager.handleCreatePost(req, res));
+app.post('/createPost', upload.single('image'), postManager.handleCreatePost);
 
 app.get('/signin', (req, res) => res.render('signin'));
 app.post('/signin', (req, res) => auth.signin(req, res));

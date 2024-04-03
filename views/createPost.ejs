@@ -4,7 +4,7 @@
 <body>
 	<%- include('./partials/header.ejs')%>
 
-	<form action="/createPost" method="POST">
+	<form action="/createPost" method="POST" enctype="multipart/form-data">
 		<h1>Create Post</h1>
 		<label for="title">Title:</label>
 		<input name="title" type="text"></input>
@@ -12,6 +12,8 @@
 		<input name="description" type="text"></input>
 		<label for="currentBid">Starting bid:</label>
 		<input name="currentBid" type="text"></input>
+        <label for="image">Image:</label>
+        <input name="image" type="file"></input>
 		<button class="button" type="submit">Create post</button>
 	</form>
 
