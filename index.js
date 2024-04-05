@@ -39,6 +39,9 @@ app.get('/account', async (req, res) => {
 app.get('/createPost', (req, res) => res.render('createPost'));
 app.post('/createPost', upload.single('image'), postManager.handleCreatePost);
 
+app.get('/createRequest', (req, res) => res.render('createRequest'));
+app.post('/createRequest', upload.single('image'), requestManager.handleCreateRequest);
+
 app.get('/signin', (req, res) => res.render('signin'));
 app.post('/signin', (req, res) => auth.signin(req, res));
 
