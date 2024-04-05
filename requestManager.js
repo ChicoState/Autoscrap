@@ -1,6 +1,6 @@
 const db = require('./firebase');
 
-const createRequest = async (authorId, currentBid, description, title, unixTime) => {
+const createRequest = async (authorId, currentBid, description, tags, title, unixTime) => {
 	const newRequest = await db.collection('requests').add({
 		authorId: authorId,
 		currentBid: currentBid,
@@ -19,7 +19,7 @@ const handleCreateRequest = async (req, res) => {
 	const title = req.body.title;
 	const tags = req.body.tags;
 	const unixTime = Date.now();
-	await createRequest(authorId, currentBid, description, title, unixTime);
+	await createRequest(authorId, currentBid, description, title, tags, unixTime);
 	res.redirect('/request'); // later, this should redirect to the page that views the newly-made post
 }
 
