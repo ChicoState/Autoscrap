@@ -1,95 +1,15 @@
-<!-- account.ejs -->
-<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autoscrap</title>
-    <style>
-        body {
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            border-bottom: 1px solid #dee2e6;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff;
-        }
-
-        .navbar-links {
-            list-style-type: none;
-            margin: 0;
-            display: flex;
-        }
-
-        .navbar-link {
-            margin-right: 20px;
-        }
-
-        button {
-            margin-top: 20px;
-            margin-right: 20px;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .f1 {
-            border-top: 1px solid;
-            color: grey;
-            text-align: center;
-        }
-
-        h2.f1 {
-            font-size: 20px;
-            color: grey;
-            padding-top: 5px;
-        }
-    </style>
+	<link rel="stylesheet" href="css/styles.css"
 </head>
 
 <body>
+	<%- include('./partials/header.ejs')%>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/browse">
-            <h2 class="header"> Autoscrap<span class="v1"></span></h2>
-        </a>
-        <ul class="navbar-links">
-            <li class="navbar-link">
-                <a class="nav-link" href="/about">About</a>
-            </li>
-        </ul>
-        <ul class="navbar-links">
-            <li class="navbar-link">
-                <a class="nav-link" href="createPost">Post</a>
-            </li>
-        </ul>
-        <form action="/signout" method="POST">
-            <button type="submit" class="btn btn-primary">Sign out</button>
-        </form>
-    </nav>
+	<div class="container mt-4">
+        	<h1>Welcome, <%= username %></h1>
+    	</div>
 
-    <div class="container mt-4">
-        <h1>Welcome, <%= username %> </h1>
-            <!-- Other account-related content goes here -->
-    </div>
-
-    <h2 class="f1">
-        <center>
-            Development:
-        </center>
-    </h2>
-    <h1 style="font-size: 20px; color: grey; text-align: center;">
-        <u><a title="" href="https://github.com/ChicoState/Autoscrap">Autoscrap Repository</a></u>
-    </h1>
-
+	<%- include('./partials/footer.ejs')%>
 </body>
-
 </html>
