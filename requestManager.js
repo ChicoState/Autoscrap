@@ -5,6 +5,7 @@ const createRequest = async (authorId, currentBid, description, title, unixTime)
 		authorId: authorId,
 		currentBid: currentBid,
 		description: description,
+		tags: tags,
 		title: title,
 		unixTime: unixTime
 	});
@@ -16,6 +17,7 @@ const handleCreateRequest = async (req, res) => {
 	const currentBid = req.body.currentBid;
 	const description = req.body.description;
 	const title = req.body.title;
+	const tags = req.body.tags;
 	const unixTime = Date.now();
 	await createRequest(authorId, currentBid, description, title, unixTime);
 	res.redirect('/request'); // later, this should redirect to the page that views the newly-made post
