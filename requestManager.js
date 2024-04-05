@@ -1,7 +1,7 @@
 const db = require('./firebase');
 
 const createRequest = async (authorId, currentBid, description, title, unixTime) => {
-	const newRequest = await db.collection('requests').add({
+	const newRequest = await db.firestore.collection('requests').add({
 		authorId: authorId,
 		currentBid: currentBid,
 		description: description,
