@@ -22,12 +22,12 @@ const handleCreateRequest = async (req, res) => {
 }
 
 const getRequests = async (limit, offset) => {
-    const snapshot = await db.collection('requests').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
+    const snapshot = await db.firestore.collection('requests').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
     return snapshot.docs.map(doc => doc.data());
 }
 
 const getRequestTotal = async () => {
-    const snapshot = await db.collection('requests').get();
+    const snapshot = await db.firestore.collection('requests').get();
     return snapshot.size;
 }
 
