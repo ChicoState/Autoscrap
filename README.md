@@ -1,5 +1,9 @@
 # Autoscrap
 
+Initial Proposal:
+A website/market place that could allow people to post requests for specific car parts that they might need and for other parties (junkyards or people with totaled vehicles) that could bid against each other to sell at the lowest prices.
+
+Environment Setup:
 1) Install node and npm
 You can do this any way you like. If you already have these installed, make sure to update them to their latest stable versions.
 Use these commands to verify installation:
