@@ -2,7 +2,7 @@ const db = require('./firebase');
 
 
 const addUser = async (username, password) => {
-	const newUser = await db.collection('users').add({
+	const newUser = await db.firestore.collection('users').add({
 		username: username,
 		password: password
 	});
@@ -10,7 +10,7 @@ const addUser = async (username, password) => {
 }
 
 const getUser = async (username, password=null) => {
-	const users = await db.collection('users').get();
+	const users = await db.firestore.collection('users').get();
 	for (const user of users.docs) {
 		const data = user.data();
 		if (data.username === username &&
@@ -23,7 +23,7 @@ const getUser = async (username, password=null) => {
 }
 
 const getUsernamebyID = async ( userID ) => {
-	const users = await db.collection('users').get();
+	const users = await db.firestore.collection('users').get();
 	for (const user of users.docs) {
 		const data = user.data();
 		if (userID === user.id)
