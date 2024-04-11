@@ -31,6 +31,12 @@ app.get('/request', async (req, res) => {
     res.render('request', { requests: requests, page: page, limit:limit, total: total });
 });
 
+app.get('/viewPost', async (req, res) => {
+	const postId = req.query.postId;
+	const post = await postManager.getPostById(postId);
+	res.render('viewPost', post);
+});
+
 app.get('/account', async (req, res) => {
     const username = await userManager.getUsernamebyID(req.session.userId);
     res.render('account', { username : username });
