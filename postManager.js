@@ -8,7 +8,7 @@ const createPost = async (authorId, currentBid, description, tags, title, unixTi
 		tags: tags,
 		title: title,
 		unixTime: unixTime,
-        image: image
+                image: image
 	});
 	return newPost;
 }
@@ -42,9 +42,27 @@ const handleCreatePost = async (req, res) => {
   }
 }
 
+const getPostById = async (postId) => {
+	const posts = await db.firestore.collection('posts').get();
+	for (const post of posts.docs) {
+		if (postId === post.id)
+		{
+			const postData = post.data();
+			postData.id = post.id;
+			return postData;
+		}
+	}
+	return null;
+}
+
 const getPosts = async (limit, offset) => {
     const snapshot = await db.firestore.collection('posts').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
-    return snapshot.docs.map(doc => doc.data());
+    return snapshot.docs.map(post => {
+        const postData = post.data();
+	postData.id = post.id
+	return postData;
+    });
+
 }
 
 const getPostsTotal = async () => {
@@ -52,11 +70,10 @@ const getPostsTotal = async () => {
     return snapshot.size;
 }
 
-
-
 module.exports = {
 	handleCreatePost,
 	createPost,
+	getPostById,
     getPosts,
     getPostsTotal
 };
