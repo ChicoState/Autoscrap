@@ -1,10 +1,11 @@
 const db = require('./firebase');
 
-const createRequest = async (authorId, currentBid, description, title, unixTime) => {
-	const newRequest = await db.collection('requests').add({
+const createRequest = async (authorId, currentBid, description, tags, title, unixTime) => {
+	const newRequest = await db.firestore.collection('requests').add({
 		authorId: authorId,
 		currentBid: currentBid,
 		description: description,
+		tags: tags,
 		title: title,
 		unixTime: unixTime
 	});
@@ -16,18 +17,19 @@ const handleCreateRequest = async (req, res) => {
 	const currentBid = req.body.currentBid;
 	const description = req.body.description;
 	const title = req.body.title;
+	const tags = req.body.tags;
 	const unixTime = Date.now();
-	await createRequest(authorId, currentBid, description, title, unixTime);
+	await createRequest(authorId, currentBid, description, title, tags, unixTime);
 	res.redirect('/request'); // later, this should redirect to the page that views the newly-made post
 }
 
 const getRequests = async (limit, offset) => {
-    const snapshot = await db.collection('requests').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
+    const snapshot = await db.firestore.collection('requests').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
     return snapshot.docs.map(doc => doc.data());
 }
 
 const getRequestTotal = async () => {
-    const snapshot = await db.collection('requests').get();
+    const snapshot = await db.firestore.collection('requests').get();
     return snapshot.size;
 }
 

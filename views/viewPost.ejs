@@ -1,0 +1,10 @@
+<html>
+<body>
+	<% if (typeof image !== 'undefined') { %>
+    		<img class="post-image" src="<%= image %>">
+  	<% } else { %>
+    		<img class="post-image" src="">
+  	<% } %>
+	<p class="post-description"><%= description %></p>
+</body>
+</html>

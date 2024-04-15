@@ -1,6 +1,16 @@
 <html>
 <head>
 	<link rel="stylesheet" href="/css/styles.css">
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const posts = document.querySelectorAll('.listings li');
+			for (const post of posts) {
+				post.addEventListener('click', () => {
+					window.location.href = '/viewPost?postId=' + post.getAttribute('data-id');
+				});
+			}
+		});
+	</script>
 </head>
 
 <body>
@@ -15,12 +25,13 @@
                     	<a href="/browse?page=<%= page + 1 %>&limit=10">Next Page</a>
                 <% } %>
                 <% for (let i = 0; i < posts.length; i++) { %>
-                	<li class="listing-tile">
+                	<li class="listing-tile" data-id="<%= posts[i].id %>">
                             <img class="listing-image" src="<%= posts[i].image %>">
                         	<div class="listing-details">
                             		<h2><%= posts[i].title %></h2>
                             		<p><%= posts[i].description %></p>
                             		<p>$<%= posts[i].currentBid %></p>
+					<p>(<%= posts[i].tags %>)</p>
                         	</div>
                     	</li>
                 <% } %>
