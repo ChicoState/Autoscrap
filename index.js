@@ -39,7 +39,8 @@ app.get('/viewPost', async (req, res) => {
 
 app.get('/account', async (req, res) => {
     const username = await userManager.getUsernamebyID(req.session.userId);
-    res.render('account', { username : username });
+    const posts = await postManager.getPostsByUserId(req.session.userId);
+    res.render('account', {username : username, posts: posts});
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));
