@@ -1,15 +1,35 @@
 <html>
 <head>
-	<link rel="stylesheet" href="css/styles.css"
+	<link rel="stylesheet" href="css/styles.css">
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const posts = document.querySelectorAll('.listings li');
+			for (const post of posts) {
+				console.log("adding event listner");
+				post.addEventListener('click', () => {
+					window.location.href = '/viewPost?postId=' + post.getAttribute('data-id');
+				});
+			}
+		});
+	</script>
 </head>
 
 <body>
 	<%- include('./partials/header.ejs')%>
 
-	<div class="container mt-4">
-        	<h1>Welcome, <%= username %></h1>
-    	</div>
-
+        <h1>Welcome, <%= username %></h1>
+	<ul class="listings">
+		<% for (const post of posts) { %>
+                	<li class="listing-tile" data-id="<%= post.id %>">
+                            	<img class="listing-image" src="<%= post.image %>">
+                        	<div class="listing-details">
+                            		<h2><%= post.title %></h2>
+                            		<p><%= post.description %></p>
+                            		<p>$<%= post.currentBid %></p>
+					<p>(<%= post.tags %>)</p>
+                        	</div>
+		<% } %>
+	</ul>
 	<%- include('./partials/footer.ejs')%>
 </body>
 </html>
