@@ -70,6 +70,15 @@ const getPostsTotal = async () => {
     return snapshot.size;
 }
 
+const searchPostsByDescription = async (searchString) => {
+    const snapshot = await db.firestore.collection('posts').where('description', '>=', searchString).get();
+    return snapshot.docs.map(post => {
+        const postData = post.data();
+        postData.id = post.id;
+        return postData;
+    });
+}
+
 module.exports = {
 	handleCreatePost,
 	createPost,
