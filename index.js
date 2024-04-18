@@ -39,9 +39,10 @@ app.get('/viewPost', async (req, res) => {
 });
 
 app.get('/account', async (req, res) => {
-    const user = await userManager.getUserById(req.session.userId);
-    const posts = await postManager.getPostsByUserId(req.session.userId);
-    res.render('account', {username : user.username, posts: posts});
+	const userId = req.query.userId || req.session.userId;
+    	const user = await userManager.getUserById(userId)
+    	const posts = await postManager.getPostsByUserId(userId);
+    	res.render('account', {username: user.username,  posts: posts});
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));

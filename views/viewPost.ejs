@@ -10,7 +10,7 @@
     		<img class="post-image" src="">
   	<% } %>
 	<h1 class="post-title"><%= post.title %></h1>
-	<h3 class="post-author">Posted by <%= user.username %></h3>
+	<a class="post-author" href="/account?userId=<%= user.userId %>">Posted by <%= user.username %></a>
 	<p class="post-description"><%= post.description %></p>
 	<%- include('./partials/footer.ejs') %>
 </body>
