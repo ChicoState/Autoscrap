@@ -22,13 +22,14 @@ const getUser = async (username, password=null) => {
 	return null;
 }
 
-const getUsernamebyID = async ( userID ) => {
+const getUserById = async (userId) => {
 	const users = await db.firestore.collection('users').get();
 	for (const user of users.docs) {
 		const data = user.data();
-		if (userID === user.id)
+		if (userId === user.id)
 		{
-			return data.username;
+			data.userId = userId;
+			return data
 		}
 	}
 	return null;
@@ -38,5 +39,5 @@ const getUsernamebyID = async ( userID ) => {
 module.exports = { 
 	addUser,
 	getUser,
-	getUsernamebyID
+	getUserById
 };

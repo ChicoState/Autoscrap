@@ -34,13 +34,14 @@ app.get('/request', async (req, res) => {
 app.get('/viewPost', async (req, res) => {
 	const postId = req.query.postId;
 	const post = await postManager.getPostById(postId);
-	res.render('viewPost', post);
+	const user = await userManager.getUserById(req.session.userId);
+	res.render('viewPost', {post: post, user: user});
 });
 
 app.get('/account', async (req, res) => {
-    const username = await userManager.getUsernamebyID(req.session.userId);
+    const user = await userManager.getUserById(req.session.userId);
     const posts = await postManager.getPostsByUserId(req.session.userId);
-    res.render('account', {username : username, posts: posts});
+    res.render('account', {username : user.username, posts: posts});
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));
