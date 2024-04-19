@@ -4,13 +4,20 @@
 </head>
 <body>
 	<%- include('./partials/header.ejs') %>
+	<h1 class="post-title"><%= post.title %></h1>
+	<a class="post-author" href="/account?userId=<%= user.userId %>">
+    		Posted on 
+		<% const date = new Date(post.unixTime); %>
+    		<%= date.toDateString() %>
+		by
+		<%= user.username %>
+	</a>
+	</p>
 	<% if (typeof post.image !== 'undefined') { %>
     		<img class="post-image" src="<%= post.image %>">
   	<% } else { %>
     		<img class="post-image" src="">
   	<% } %>
-	<h1 class="post-title"><%= post.title %></h1>
-	<a class="post-author" href="/account?userId=<%= user.userId %>">Posted by <%= user.username %></a>
 	<p class="post-description"><%= post.description %></p>
 	<%- include('./partials/footer.ejs') %>
 </body>

@@ -83,6 +83,19 @@ form .button:hover {
 	max-height: 50%;
 }
 
+.post-title {
+	text-align: center;
+}
+
+.post-author {
+	display: block;
+	text-align: center;
+}
+
+.post-description {
+	text-align: center;
+}
+
 /* header navbar styles */
 .navbar-header {
 	position: fixed;
@@ -119,5 +132,5 @@ form .button:hover {
 	padding: 0;
 	margin-left 20px;
 	width: 100%;
-}}
+}
 
