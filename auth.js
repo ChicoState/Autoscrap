@@ -24,12 +24,12 @@ const signup = async (req, res) => {
 	const user = await userManager.getUser(username);
 
 	if (user) {
-		console.log('Failed to sign up, username ' + username + ' already exists.');
+		return false;
 	} else {
 		const newUser = await userManager.addUser(username, password);
-		console.log('Signed up with username ' + username + ' and password ' + password);
 		req.session.userId = newUser.id;
 		res.redirect('/browse');
+		return true;
 	}
 }
 

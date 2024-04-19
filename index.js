@@ -53,7 +53,7 @@ app.get('/createRequest', (req, res) => res.render('createRequest'));
 app.post('/createRequest', upload.single('image'), requestManager.handleCreateRequest);
 
 app.get('/signin', (req, res) => {
-    const signinFailure = req.query.signinFailure == 'true';;
+    const signinFailure = req.query.signinFailure == 'true';
     res.render('signin', {signinFailure: signinFailure});
 });
 
@@ -65,8 +65,17 @@ app.post('/signin', async (req, res) => {
 });
 
 
-app.get('/signup', (req, res) => res.render('signup'));
-app.post('/signup', (req, res) => auth.signup(req, res));
+app.get('/signup', (req, res) => {
+	const signupFailure = req.query.signupFailure == 'true';
+	res.render('signup', {signupFailure: signupFailure});
+});
+
+app.post('/signup', async (req, res) => {
+	const isSuccessful = await auth.signup(req, res);
+	if (!isSuccessful) {
+		res.redirect('signup?signupFailure=true');
+	}
+});
 
 app.post('/signout', (req, res) => auth.signout(req, res));
 
