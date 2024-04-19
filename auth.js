@@ -37,13 +37,12 @@ const signin = async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
 	const user = await userManager.getUser(username, password);
-
 	if (user) {
-		console.log('Signed in with username ' + username + ' and password ' + password);
 		req.session.userId = user.id;
 		res.redirect('/browse');
+		return true;
 	} else {
-		console.log('Failed to sign in with username ' + username + ' and password ' + password);
+		return false;
 	}		
 }
 

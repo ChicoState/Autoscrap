@@ -53,6 +53,10 @@ form .button:hover {
 	color: #ffffff;
 }
 
+.error-text {
+	color: red;
+}
+
 /* browse styles */
 .listings {
 	list-style: none;
