@@ -16,8 +16,11 @@
 
 <body>
 	<%- include('./partials/header.ejs')%>
-
-        <h1>Welcome, <%= username %></h1>
+	<% if (isOwnAccount) { %>
+        	<h1>Welcome, <%= username %></h1>
+	<% } else { %>
+		<h1><%= username %>'s Posts</h1>
+	<% } %>
 	<ul class="listings">
 		<% for (const post of posts) { %>
                 	<li class="listing-tile" data-id="<%= post.id %>">

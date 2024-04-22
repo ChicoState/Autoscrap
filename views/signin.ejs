@@ -6,6 +6,9 @@
 <body>
 	<form action="/signin" method="POST">
 		<h1>Sign in</h1>
+		<% if (signinFailure) { %>
+			<p class="error-text">Sorry, incorrect username or password. Try again.</p>
+		<% } %>
 		<label for="username">Username:</label>
 		<input name="username" type="text"></input>
 		<label for="password">Password:</label>
