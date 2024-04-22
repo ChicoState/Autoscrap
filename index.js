@@ -22,6 +22,16 @@ app.get('/browse', async (req, res) => {
     res.render('browse', { posts: posts, page: page, limit:limit, total: total });
 });
 
+app.get('/search', async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    const offset = (page - 1) * limit;
+    const posts = await postManager.getPosts(limit, offset);//make a new search function in postManager
+    const total = await postManager.getPostsTotal();
+    res.render('browse', { posts: posts, /*searchTerm: searchTerm,*/ page: page, limit: limit, total: total });
+});
+
 app.get('/request', async (req, res) => {
     let page = req.query.page ? parseInt(req.query.page) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;
