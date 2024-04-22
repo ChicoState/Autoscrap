@@ -16,6 +16,11 @@
 <body>
 	<%- include('./partials/header.ejs') %>
 
+    <form action="/search" method="GET">
+        <input type="text" name="query" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
+
 	<h1>Browsing <%= total %> Posts...</h1>
 	<ul class="listings">
 		<% if (page > 1) { %>
