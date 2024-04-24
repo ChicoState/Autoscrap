@@ -24,13 +24,13 @@ account.ejs
 	</script>
 </head>
 
-<body>
-	<%- include('./partials/header.ejs')%>
-	<% if (isOwnAccount) { %>
-        	<h1>Welcome, <%= username %></h1>
-	<% } else { %>
-		<h1><%= username %>'s Posts</h1>
-	<% } %>
+	<body>
+		<%- include('./partials/header.ejs')%>
+		<% if (isOwnAccount) { %>
+				<h1>Welcome, <%= username %></h1>
+				<h1><%= username %>'s Posts</h1>
+		<% } %>
+
 
     <!-- Posts Listings -->
 	<ul class="listings">
@@ -45,6 +45,12 @@ account.ejs
 			</li>
 		<% } %>
 	</ul>
+
+	<body>
+		<%- include('./partials/header.ejs')%>
+		<% if (isOwnAccount) { %>
+				<h1><%= username %>'s Requests</h1>
+		<% } %>
 
     <!-- Requests Listings -->
 	<ul class="listings">
