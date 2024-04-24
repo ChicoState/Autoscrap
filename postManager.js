@@ -70,13 +70,18 @@ const getPostsTotal = async () => {
     return snapshot.size;
 }
 
-const searchPostsByDescription = async (searchString) => {
-    const snapshot = await db.firestore.collection('posts').where('description', '>=', searchString).get();
+const getPostsSearch = async (limit, offset, searchString) => {
+    const snapshot = await db.firestore.collection('posts').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
     return snapshot.docs.map(post => {
         const postData = post.data();
-        postData.id = post.id;
-        return postData;
+	postData.id = post.id
+	return postData;
     });
+}
+
+const getPostsTotalSearch = async (searchString) => {
+    const snapshot = await db.firestore.collection('posts').where('description', '>=', searchString).get();
+    return snapshot.size;
 }
 
 module.exports = {
@@ -84,6 +89,8 @@ module.exports = {
 	createPost,
 	getPostById,
     getPosts,
-    getPostsTotal
+    getPostsTotal,
+    getPostsSearch,
+    getPostsTotalSearch
 };
 
