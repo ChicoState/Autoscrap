@@ -55,6 +55,17 @@ const getPostById = async (postId) => {
 	return null;
 }
 
+const getPostsByUserId = async (userId) => {
+	const posts = await db.firestore.collection('posts').orderBy('unixTime', 'desc').get();
+	return posts.docs.map(post => {
+		const postData = post.data();
+		postData.id = post.id;
+		return postData
+	}).filter(post => {
+		return post.authorId == userId;
+	});
+}
+
 const getPosts = async (limit, offset) => {
     const snapshot = await db.firestore.collection('posts').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
     return snapshot.docs.map(post => {
@@ -62,7 +73,6 @@ const getPosts = async (limit, offset) => {
 	postData.id = post.id
 	return postData;
     });
-
 }
 
 const getPostsTotal = async () => {
@@ -74,6 +84,7 @@ module.exports = {
 	handleCreatePost,
 	createPost,
 	getPostById,
+	getPostsByUserId,
     getPosts,
     getPostsTotal
 };

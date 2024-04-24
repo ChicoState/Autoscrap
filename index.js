@@ -34,12 +34,16 @@ app.get('/request', async (req, res) => {
 app.get('/viewPost', async (req, res) => {
 	const postId = req.query.postId;
 	const post = await postManager.getPostById(postId);
-	res.render('viewPost', post);
+	const user = await userManager.getUserById(post.authorId);
+	res.render('viewPost', {post: post, user: user});
 });
 
 app.get('/account', async (req, res) => {
-    const username = await userManager.getUsernamebyID(req.session.userId);
-    res.render('account', { username : username });
+	const userId = req.query.userId || req.session.userId;
+	const isOwnAccount = userId === req.session.userId;
+    	const user = await userManager.getUserById(userId)
+    	const posts = await postManager.getPostsByUserId(userId);
+    	res.render('account', {isOwnAccount: isOwnAccount, username: user.username,  posts: posts});
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));
@@ -48,11 +52,30 @@ app.post('/createPost', upload.single('image'), postManager.handleCreatePost);
 app.get('/createRequest', (req, res) => res.render('createRequest'));
 app.post('/createRequest', upload.single('image'), requestManager.handleCreateRequest);
 
-app.get('/signin', (req, res) => res.render('signin'));
-app.post('/signin', (req, res) => auth.signin(req, res));
+app.get('/signin', (req, res) => {
+    const signinFailure = req.query.signinFailure == 'true';
+    res.render('signin', {signinFailure: signinFailure});
+});
 
-app.get('/signup', (req, res) => res.render('signup'));
-app.post('/signup', (req, res) => auth.signup(req, res));
+app.post('/signin', async (req, res) => {
+    const isSuccessful = await auth.signin(req, res);
+    if (!isSuccessful) {
+        res.redirect('/signin?signinFailure=true');
+    }
+});
+
+
+app.get('/signup', (req, res) => {
+	const signupFailure = req.query.signupFailure == 'true';
+	res.render('signup', {signupFailure: signupFailure});
+});
+
+app.post('/signup', async (req, res) => {
+	const isSuccessful = await auth.signup(req, res);
+	if (!isSuccessful) {
+		res.redirect('signup?signupFailure=true');
+	}
+});
 
 app.post('/signout', (req, res) => auth.signout(req, res));
 
