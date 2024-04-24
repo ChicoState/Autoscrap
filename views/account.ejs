@@ -1,16 +1,26 @@
+account.ejs
+
 <html>
 <head>
 	<link rel="stylesheet" href="css/styles.css">
 	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			const posts = document.querySelectorAll('.listings li');
-			for (const post of posts) {
-				console.log("adding event listner");
-				post.addEventListener('click', () => {
-					window.location.href = '/viewPost?postId=' + post.getAttribute('data-id');
-				});
-			}
-		});
+	document.addEventListener('DOMContentLoaded', () => {
+    const posts = document.querySelectorAll('.post');
+    posts.forEach(post => {
+        post.addEventListener('click', () => {
+            const postId = post.getAttribute('data-id');
+            window.location.href = '/viewPost?postId=' + postId;
+        });
+    });
+    const requests = document.querySelectorAll('.request');
+    requests.forEach(request => {
+        request.addEventListener('click', () => {
+            const requestId = request.getAttribute('data-id');
+            window.location.href = '/viewRequest?requestId=' + requestId;
+        });
+    });
+});
+
 	</script>
 </head>
 
@@ -21,16 +31,32 @@
 	<% } else { %>
 		<h1><%= username %>'s Posts</h1>
 	<% } %>
+
+    <!-- Posts Listings -->
 	<ul class="listings">
 		<% for (const post of posts) { %>
-                	<li class="listing-tile" data-id="<%= post.id %>">
-                            	<img class="listing-image" src="<%= post.image %>">
-                        	<div class="listing-details">
-                            		<h2><%= post.title %></h2>
-                            		<p><%= post.description %></p>
-                            		<p>$<%= post.currentBid %></p>
-					<p>(<%= post.tags %>)</p>
-                        	</div>
+			<li class="listing-tile post" data-id="<%= post.id %>">
+				<img class="listing-image" src="<%= post.image %>">
+				<div class="listing-details">
+				<h2><%= post.title %></h2>
+				<p><%= post.description %></p>
+				<p>$<%= post.currentBid %></p>
+				<p>(<%= post.tags %>)</p>
+			</li>
+		<% } %>
+	</ul>
+
+    <!-- Requests Listings -->
+	<ul class="listings">
+		<% for (const request of requests) { %>
+			<li class="listing-tile request" data-id="<%= request.id %>">
+				<div class="listing-details">
+                    <h2><%= request.title %></h2>
+                    <p><%= request.description %></p>
+                    <p>$<%= request.currentBid %></p>
+                    <p>(<%= request.tags %>)</p>
+                </div>
+			</li>
 		<% } %>
 	</ul>
 	<%- include('./partials/footer.ejs')%>
