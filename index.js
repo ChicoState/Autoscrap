@@ -38,12 +38,20 @@ app.get('/viewPost', async (req, res) => {
 	res.render('viewPost', {post: post, user: user});
 });
 
+app.get('/viewRequest', async (req, res) => {
+	const requestId = req.query.requestId;
+	const request = await requestManager.getRequestById(requestId);
+	const user = await userManager.getUserById(request.authorId);
+	res.render('viewRequest', {request: request, user: user});
+});
+
 app.get('/account', async (req, res) => {
 	const userId = req.query.userId || req.session.userId;
 	const isOwnAccount = userId === req.session.userId;
-    	const user = await userManager.getUserById(userId)
-    	const posts = await postManager.getPostsByUserId(userId);
-    	res.render('account', {isOwnAccount: isOwnAccount, username: user.username,  posts: posts});
+    const user = await userManager.getUserById(userId)
+    const posts = await postManager.getPostsByUserId(userId);
+    const requests = await requestManager.getRequestsByUserId(userId);
+    res.render('account', {isOwnAccount: isOwnAccount, username: user.username,  posts: posts, requests: requests});
 });
 
 app.get('/createPost', (req, res) => res.render('createPost'));

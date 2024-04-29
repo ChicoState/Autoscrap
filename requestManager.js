@@ -7,7 +7,7 @@ const createRequest = async (authorId, currentBid, description, tags, title, uni
 		description: description,
 		tags: tags,
 		title: title,
-		unixTime: unixTime
+		unixTime: unixTime,
 	});
 	return newRequest;
 }
@@ -16,16 +16,44 @@ const handleCreateRequest = async (req, res) => {
 	const authorId = req.session.userId;
 	const currentBid = req.body.currentBid;
 	const description = req.body.description;
-	const title = req.body.title;
 	const tags = req.body.tags;
+	const title = req.body.title;
 	const unixTime = Date.now();
-	await createRequest(authorId, currentBid, description, title, tags, unixTime);
-	res.redirect('/request'); // later, this should redirect to the page that views the newly-made post
+	await createRequest(authorId, currentBid, description, tags, title, unixTime);
+	res.redirect('/request');
+}
+
+const getRequestById = async (requestId) => {
+	const requests = await db.firestore.collection('requests').get();
+	for (const request of requests.docs) {
+		if (requestId === request.id)
+		{
+			const requestData = request.data();
+			requestData.id = request.id;
+			return requestData;
+		}
+	}
+	return null;
+}
+
+const getRequestsByUserId = async (userId) => {
+	const requests = await db.firestore.collection('requests').orderBy('unixTime', 'desc').get();
+	return requests.docs.map(request => {
+		const requestData = request.data();
+		requestData.id = request.id;
+		return requestData
+	}).filter(request => {
+		return request.authorId == userId;
+	});
 }
 
 const getRequests = async (limit, offset) => {
-    const snapshot = await db.firestore.collection('requests').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
-    return snapshot.docs.map(doc => doc.data());
+	const snapshot = await db.firestore.collection('requests').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
+    return snapshot.docs.map(request => {
+        const requestData = request.data();
+	requestData.id = request.id
+	return requestData;
+    });
 }
 
 const getRequestTotal = async () => {
@@ -35,6 +63,8 @@ const getRequestTotal = async () => {
 
 module.exports = {
 	handleCreateRequest,
+	getRequestById,
+	getRequestsByUserId,
 	createRequest,
     getRequests,
     getRequestTotal
