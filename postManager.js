@@ -71,12 +71,43 @@ const getPostsTotal = async () => {
 }
 
 const getPostsSearch = async (limit, offset, searchString) => {
-    const snapshot = await db.firestore.collection('posts').orderBy('unixTime', 'desc').limit(limit).offset(offset).get();
-    return snapshot.docs.map(post => {
+    const titlePromise = db.firestore.collection('posts')
+        .where('title', '>=', searchString)
+        .orderBy('unixTime', 'desc')
+        .get();
+    const tagsPromise = db.firestore.collection('posts')
+        .where('tags', '>=', searchString)
+        .orderBy('unixTime', 'desc')
+        .get();
+
+    const descriptionPromise = db.firestore.collection('posts')
+        .where('description', '>=', searchString)
+        .orderBy('unixTime', 'desc')
+        .get();
+
+    const [titleSnapshot, tagsSnapshot, descriptionSnapshot] = await Promise.all([titlePromise, tagsPromise, descriptionPromise]);
+    
+    const titleDocs = titleSnapshot.docs.map(post => {
         const postData = post.data();
-	postData.id = post.id
-	return postData;
+        postData.id = post.id;
+        return postData;
     });
+
+    const tagsDocs = tagsSnapshot.docs.map(post => {
+        const postData = post.data();
+        postData.id = post.id;
+        return postData;
+    });
+
+    const descriptionDocs = descriptionSnapshot.docs.map(post => {
+        const postData = post.data();
+        postData.id = post.id;
+        return postData;
+    });
+
+    const allDocs = titleDocs.concat(tagsDocs).concat(descriptionDocs);
+    const uniqueDocs = allDocs.filter((post, index, self) => self.findIndex(t => t.id === post.id) === index);
+    return uniqueDocs.slice(offset, offset + limit);
 }
 
 const getPostsTotalSearch = async (searchString) => {
