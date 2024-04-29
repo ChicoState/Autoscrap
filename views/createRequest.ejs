@@ -4,8 +4,8 @@
 <body>
 	<%- include('./partials/header.ejs')%>
 
-	<form action="/createPost" method="POST" enctype="multipart/form-data">
-		<h1>Create Post</h1>
+	<form action="/createRequest" method="POST" enctype="multipart/form-data">
+		<h1>Create Request</h1>
 		<label for="title">Title:</label>
 		<input name="title" type="text"></input>
 		<label for="description">Description:</label>
@@ -14,9 +14,9 @@
 		<input name="currentBid" type="number"></input>
 		<label for="tags">Tags (comma seperated):</label>	
 		<input name="tags" type="text"></input>
-    <label for="image">Image:</label>
-    <input name="image" type="file"></input>
-		<button class="button" type="submit">Create post</button>
+<!--         <label for="image">Image:</label>
+        <input name="image" type="file"></input> -->
+		<button class="button" type="submit">Create request</button>
 	</form>
 
 	<%- include('./partials/footer.ejs')%>

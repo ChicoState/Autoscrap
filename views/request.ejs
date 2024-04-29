@@ -1,0 +1,49 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <%- include('./partials/header.ejs') %>
+
+    <h1>Browsing <%= total %> Request...</h1>
+    <ul class="listings">
+        <% if (page > 1) { %>
+            <li><a href="/request?page=<%= page - 1 %>&limit=10">Last Page</a></li>
+        <% } %>
+        <% if (page < (total/limit)) { %>
+            <li><a href="/request?page=<%= page + 1 %>&limit=10">Next Page</a></li>
+        <% } %>
+        <% for (let i = 0; i < requests.length; i++) { %>
+            <li class="listing-tile" data-id="<%= requests[i].id %>">
+                <div class="listing-details">
+                    <h2><%= requests[i].title %></h2>
+                    <p><%= requests[i].description %></p>
+                    <p>$<%= requests[i].currentBid %></p>
+                    <p>(<%= requests[i].tags %>)</p>
+                </div>
+            </li>
+        <% } %>
+        <% if (page > 1) { %>
+            <li><a href="/request?page=<%= page - 1 %>&limit=10">Last Page</a></li>
+        <% } %>
+        <% if (page < (total/limit)) { %>
+            <li><a href="/request?page=<%= page + 1 %>&limit=10">Next Page</a></li>
+        <% } %>
+    </ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const requests = document.querySelectorAll('.listings li');
+            requests.forEach(request => {
+                request.addEventListener('click', () => {
+                    const requestId = request.getAttribute('data-id');
+                    window.location.href = '/viewRequest?requestId=' + requestId;
+                });
+            });
+        });
+    </script>
+
+    <% include('./partials/footer.ejs') %>
+</body>
+</html>
