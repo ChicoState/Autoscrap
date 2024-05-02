@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,13 @@
     "express": "^4.18.2",
     "express-session": "^1.18.0",
     "firebase-admin": "^12.0.0",
-    "multer": "^1.4.5-lts.1"
+
+    "jasmine-node": "^1.16.0",
+    "multer": "^1.4.5-lts.1",
+    "request": "^2.88.2",
+    "sinon": "^17.0.1"
+  },
+  "devDependencies": {
+    "jasmine": "^5.1.0"
   }
 }

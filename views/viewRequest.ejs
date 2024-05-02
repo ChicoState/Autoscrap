@@ -1,0 +1,19 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/css/styles.css"></link>
+</head>
+<body>
+	<%- include('./partials/header.ejs') %>
+	<h1 class="request-title"><%= request.title %></h1>
+	<a class="request-author" href="/account?userId=<%= user.userId %>">
+    		Requested on 
+		<% const date = new Date(request.unixTime); %>
+    		<%= date.toDateString() %>
+		by
+		<%= user.username %>
+	</a>
+	</p>
+	<p class="request-description"><%= request.description %></p>
+	<%- include('./partials/footer.ejs') %>
+</body>
+</html>

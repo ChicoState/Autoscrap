@@ -6,6 +6,9 @@
 <body>
 	<form action="/signup" method="POST">
 		<h1>Sign up</h1>
+		<% if (signupFailure) { %>
+			<p class="error-text">Sorry, that username already exists.</p>
+		<% } %>
 		<label for="username">Username:</label>
 		<input name="username" type="text"></input>
 		<label for="password">Password:</label>
