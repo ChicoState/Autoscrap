@@ -1,4 +1,5 @@
 const db = require('./firebase');//holds firestore and storage
+const index = require('./algolia');//holds algolia index
 
 const createPost = async (authorId, currentBid, description, tags, title, unixTime, image) => {
 	const newPost = await db.firestore.collection('posts').add({
@@ -70,49 +71,22 @@ const getPostsTotal = async () => {
     return snapshot.size;
 }
 
+//uses algolia index instead of firestore
 const getPostsSearch = async (limit, offset, searchString) => {
-    const titlePromise = db.firestore.collection('posts')
-        .where('title', '>=', searchString)
-        .orderBy('unixTime', 'desc')
-        .get();
-    const tagsPromise = db.firestore.collection('posts')
-        .where('tags', '>=', searchString)
-        .orderBy('unixTime', 'desc')
-        .get();
-
-    const descriptionPromise = db.firestore.collection('posts')
-        .where('description', '>=', searchString)
-        .orderBy('unixTime', 'desc')
-        .get();
-
-    const [titleSnapshot, tagsSnapshot, descriptionSnapshot] = await Promise.all([titlePromise, tagsPromise, descriptionPromise]);
-    
-    const titleDocs = titleSnapshot.docs.map(post => {
-        const postData = post.data();
-        postData.id = post.id;
+    const { hits } = await index.search(searchString, {
+        hitsPerPage: limit,
+        page: offset
+    });
+    return hits.map(hit => {
+        const postData = hit;
+        postData.id = hit.objectID;
         return postData;
     });
-
-    const tagsDocs = tagsSnapshot.docs.map(post => {
-        const postData = post.data();
-        postData.id = post.id;
-        return postData;
-    });
-
-    const descriptionDocs = descriptionSnapshot.docs.map(post => {
-        const postData = post.data();
-        postData.id = post.id;
-        return postData;
-    });
-
-    const allDocs = titleDocs.concat(tagsDocs).concat(descriptionDocs);
-    const uniqueDocs = allDocs.filter((post, index, self) => self.findIndex(t => t.id === post.id) === index);
-    return uniqueDocs.slice(offset, offset + limit);
 }
 
 const getPostsTotalSearch = async (searchString) => {
-    const snapshot = await db.firestore.collection('posts').where('description', '>=', searchString).get();
-    return snapshot.size;
+    const { hits } = await index.search(searchString);
+    return hits.length;
 }
 
 module.exports = {

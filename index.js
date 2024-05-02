@@ -4,7 +4,6 @@ const postManager = require('./postManager');
 const userManager = require('./userManager');
 const upload = require('./fileManager');
 const requestManager = require('./requestManager');
-const db = require('./firebase');
 const app = express();
 const port = 8080;
 
