@@ -1,12 +1,16 @@
 <header class="navbar-header">
 	<h2>Autoscrap</h2>
-	<nav>
-		<a href="/createPost">Create Post</a>
-		<a href="/browse">Browse</a>
-		<a href="/request">Request</a>
-		<a href="/account">Account</a>
-		<a href="/about">About</a>
-		<a href="/signout">Sign out</a>
+    <nav>
+        <a href="/createPost">Create Post</a>
+        <a href="/browse">Browse</a>
+        <a href="/request">Request</a>
+        <form action="/search" method="GET" style="display: inline-block;">
+            <input type="text" name="query" placeholder="Search..." style="width: 100%; display: inline-block;">
+        </form>
+        <a href="/account">Account</a>
+        <a href="/about">About</a>
+        <a href="/signout">Sign out</a>
+
 	</nav>
 </header>
 
