@@ -4,7 +4,6 @@ const postManager = require('./postManager');
 const userManager = require('./userManager');
 const upload = require('./fileManager');
 const requestManager = require('./requestManager');
-const db = require('./firebase');
 const app = express();
 const port = 8080;
 
@@ -20,6 +19,16 @@ app.get('/browse', async (req, res) => {
     const posts = await postManager.getPosts(limit, offset);
     const total = await postManager.getPostsTotal();
     res.render('browse', { posts: posts, page: page, limit:limit, total: total });
+});
+
+app.get('/search', async (req, res) => {
+    const searchTerm = req.query.query;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    const offset = (page - 1) * limit;
+    const posts = await postManager.getPostsSearch(limit, offset, searchTerm);
+    const total = await postManager.getPostsTotalSearch(searchTerm);
+    res.render('browse', { posts: posts, searchTerm: searchTerm, page: page, limit: limit, total: total });
 });
 
 app.get('/request', async (req, res) => {

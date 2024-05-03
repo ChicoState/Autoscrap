@@ -18,10 +18,10 @@
 	<h1>Browsing <%= total %> Posts...</h1>
 	<ul class="listings">
 		<% if (page > 1) { %>
-                	<a href="/browse?page=<%= page - 1 %>&limit=10">Last Page</a>
+                	<a href="/search?page=<%= page - 1 %>&limit=10">Last Page</a>
                 <% } %>
                 <% if (page < (total/limit)) { %>
-                    	<a href="/browse?page=<%= page + 1 %>&limit=10">Next Page</a>
+                    	<a href="/search?page=<%= page + 1 %>&limit=10">Next Page</a>
                 <% } %>
                 <% for (let i = 0; i < posts.length; i++) { %>
                 	<li class="listing-tile" data-id="<%= posts[i].id %>">
@@ -35,10 +35,10 @@
                     	</li>
                 <% } %>
                 <% if (page > 1) { %>
-			<a href="/browse?page=<%= page - 1 %>&limit=10">Last Page</a>
+			<a href="/search?page=<%= page - 1 %>&limit=10">Last Page</a>
                 <% } %>
                 <% if (page < (total/limit)) { %>
-			<a href="/browse?page=<%= page + 1 %>&limit=10">Next Page</a>
+			<a href="/search?page=<%= page + 1 %>&limit=10">Next Page</a>
                 <% } %>
 	</ul>
 	

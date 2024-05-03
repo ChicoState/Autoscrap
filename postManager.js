@@ -1,4 +1,5 @@
 const db = require('./firebase');//holds firestore and storage
+const index = require('./algolia');//holds algolia index
 
 const createPost = async (authorId, currentBid, description, tags, title, unixTime, image) => {
 	const newPost = await db.firestore.collection('posts').add({
@@ -80,12 +81,32 @@ const getPostsTotal = async () => {
     return snapshot.size;
 }
 
+//uses algolia index instead of firestore
+const getPostsSearch = async (limit, offset, searchString) => {
+    const { hits } = await index.search(searchString, {
+        hitsPerPage: limit,
+        page: offset
+    });
+    return hits.map(hit => {
+        const postData = hit;
+        postData.id = hit.objectID;
+        return postData;
+    });
+}
+
+const getPostsTotalSearch = async (searchString) => {
+    const { hits } = await index.search(searchString);
+    return hits.length;
+}
+
 module.exports = {
 	handleCreatePost,
 	createPost,
 	getPostById,
 	getPostsByUserId,
     getPosts,
-    getPostsTotal
+    getPostsTotal,
+    getPostsSearch,
+    getPostsTotalSearch
 };
 

@@ -107,7 +107,7 @@ form .button:hover {
 	left: 0;
 	width: 100%;
 	background-color: #eeeeee;
-	padding: 10px 0;
+	padding: 0;
 	z-index: 9999;
 }
 
@@ -130,11 +130,27 @@ form .button:hover {
 	color: #ffffff;
 }
 
+
+.navbar-header form {
+    padding: 0;
+    display: inline-block;
+    margin: 0;
+    margin-left: 20px;
+    height: 30px;
+}
+
+.navbar-header input[type="text"] {
+    width: auto;
+    display: inline-block;
+    margin-right: 5px;
+    height: 100%; /* Make the input field take up the full height of the form */
+}
+
 /* footer styles */
 
 .footer-info {
 	padding: 0;
-	margin-left 20px;
+	margin-left: 20px;
 	width: 100%;
 }
 
