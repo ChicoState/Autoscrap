@@ -26,6 +26,7 @@
 	<%- include('./partials/header.ejs')%>
 	<% if (isOwnAccount) { %>
         	<h1>Welcome, <%= username %></h1>
+
 	<% } else { %>
 		<h1><%= username %>'s Posts</h1>
 	<% } %>
@@ -43,6 +44,10 @@
 			</li>
 		<% } %>
 	</ul>
+
+	<% if (isOwnAccount) { %>
+		<h1><%= username %>'s Requests</h1>
+	<% } %>
 
     <!-- Requests Listings -->
 	<ul class="listings">
