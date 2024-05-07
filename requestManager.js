@@ -61,12 +61,24 @@ const getRequestTotal = async () => {
     return snapshot.size;
 }
 
+const deleteRequest = async (requestId) => {
+    try {
+        await db.firestore.collection('requests').doc(requestId).delete();
+        console.log("Request successfully deleted");
+        return true;
+    } catch (error) {
+        console.error("Error deleting request:", error);
+        return false;
+    }
+}
+
 module.exports = {
 	handleCreateRequest,
 	getRequestById,
 	getRequestsByUserId,
 	createRequest,
     getRequests,
-    getRequestTotal
+    getRequestTotal,
+	deleteRequest
 };
 
