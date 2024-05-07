@@ -54,6 +54,38 @@ app.get('/viewRequest', async (req, res) => {
 	res.render('viewRequest', {request: request, user: user});
 });
 
+app.post('/deletePost', async (req, res) => {
+    try {
+        const postId = req.body.postId;
+        const success = await postManager.deletePost(postId);
+        if (success) {
+            // Redirect to the account page after successful deletion
+            res.redirect('/account');
+        } else {
+            res.status(500).send("Failed to delete post");
+        }
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        res.status(500).send("Error deleting post. Please try again later.");
+    }
+});
+
+app.post('/deleteRequest', async (req, res) => {
+    try {
+        const requestId = req.body.requestId;
+        const success = await requestManager.deleteRequest(requestId);
+        if (success) {
+            // Redirect to the account page after successful deletion
+            res.redirect('/account');
+        } else {
+            res.status(500).send("Failed to delete request");
+        }
+    } catch (error) {
+        console.error("Error deleting request:", error);
+        res.status(500).send("Error deleting request. Please try again later.");
+    }
+});
+
 app.get('/account', async (req, res) => {
 	const userId = req.query.userId || req.session.userId;
 	const isOwnAccount = userId === req.session.userId;

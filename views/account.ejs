@@ -18,50 +18,84 @@
         });
     });
 });
-
 	</script>
 </head>
 
 <body>
 	<%- include('./partials/header.ejs')%>
 	<% if (isOwnAccount) { %>
-        	<h1>Welcome, <%= username %></h1>
+	<!-- Posts Listings -->
+	<h1><%= username %>'s Posts</h1>
+	<ul class="listings">
+    	<% for (const post of posts) { %>
+        	<li class="listing-tile post" data-id="<%= post.id %>">
+            	<img class="listing-image" src="<%= post.image %>">
+            	<div class="listing-details">
+                	<h2><%= post.title %></h2>
+                	<p><%= post.description %></p>
+                	<p>$<%= post.currentBid %></p>
+                	<p>(<%= post.tags %>)</p>
+            	</div>
+            	<form action="/deletePost" method="POST" class="delete-form">
+                	<input type="hidden" name="postId" value="<%= post.id %>">
+                	<button type="submit" class="delete-button">Delete</button>
+            	</form>
+        	</li>
+    	<% } %>
+	</ul>
 
+	<!-- Requests Listings -->
+	<h1><%= username %>'s Requests</h1>
+	<ul class="listings">
+    	<% for (const request of requests) { %>
+        	<li class="listing-tile request" data-id="<%= request.id %>">
+            	<div class="listing-details">
+                	<h2><%= request.title %></h2>
+                	<p><%= request.description %></p>
+                	<p>$<%= request.currentBid %></p>
+                	<p>(<%= request.tags %>)</p>
+            	</div>
+            	<form action="/deleteRequest" method="POST" class="delete-form">
+                	<input type="hidden" name="requestId" value="<%= request.id %>">
+                	<button type="submit" class="delete-button">Delete</button>
+            	</form>
+        	</li>
+    	<% } %>
+	</ul>
 	<% } else { %>
+		<!-- Display posts and requests without delete buttons for other users -->
+		<!-- Posts Listings -->
 		<h1><%= username %>'s Posts</h1>
-	<% } %>
-
-    <!-- Posts Listings -->
-	<ul class="listings">
-		<% for (const post of posts) { %>
-			<li class="listing-tile post" data-id="<%= post.id %>">
-				<img class="listing-image" src="<%= post.image %>">
-				<div class="listing-details">
-				<h2><%= post.title %></h2>
-				<p><%= post.description %></p>
-				<p>$<%= post.currentBid %></p>
-				<p>(<%= post.tags %>)</p>
-			</li>
-		<% } %>
-	</ul>
-
-	<% if (isOwnAccount) { %>
+		<ul class="listings">
+			<% for (const post of posts) { %>
+				<li class="listing-tile post" data-id="<%= post.id %>">
+					<img class="listing-image" src="<%= post.image %>">
+					<div class="listing-details">
+						<h2><%= post.title %></h2>
+						<p><%= post.description %></p>
+						<p>$<%= post.currentBid %></p>
+						<p>(<%= post.tags %>)</p>
+					</div>
+				</li>
+			<% } %>
+		</ul>
+	
+		<!-- Requests Listings -->
 		<h1><%= username %>'s Requests</h1>
+		<ul class="listings">
+			<% for (const request of requests) { %>
+				<li class="listing-tile request" data-id="<%= request.id %>">
+					<div class="listing-details">
+						<h2><%= request.title %></h2>
+						<p><%= request.description %></p>
+						<p>$<%= request.currentBid %></p>
+						<p>(<%= request.tags %>)</p>
+					</div>
+				</li>
+			<% } %>
+		</ul>
 	<% } %>
-
-    <!-- Requests Listings -->
-	<ul class="listings">
-		<% for (const request of requests) { %>
-			<li class="listing-tile request" data-id="<%= request.id %>">
-				<div class="listing-details">
-                    <h2><%= request.title %></h2>
-                    <p><%= request.description %></p>
-                    <p>$<%= request.currentBid %></p>
-                    <p>(<%= request.tags %>)</p>
-                </div>
-			</li>
-		<% } %>
-	</ul>
+	
 	<%- include('./partials/footer.ejs')%>
 </body>
 </html>
