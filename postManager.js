@@ -99,6 +99,17 @@ const getPostsTotalSearch = async (searchString) => {
     return hits.length;
 }
 
+const deletePost = async (postId) => {
+    try {
+        await db.firestore.collection('posts').doc(postId).delete();
+        console.log("Post successfully deleted");
+        return true;
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        return false;
+    }
+}
+
 module.exports = {
 	handleCreatePost,
 	createPost,
@@ -107,6 +118,7 @@ module.exports = {
     getPosts,
     getPostsTotal,
     getPostsSearch,
-    getPostsTotalSearch
+    getPostsTotalSearch,
+    deletePost
 };
 
