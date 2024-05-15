@@ -13,18 +13,13 @@ describe('signup function', () => {
 
     afterEach(() => {
         getUserStub.restore();
-        if (addUserStub) addUserStub.restore(); // Check if addUserStub exists before restoring
+        if (addUserStub) addUserStub.restore();
     });
 
     it('should signup a new user and redirect to browse page if user does not exist', async () => {
-        // Mocking the request and response objects
         const req = { body: { username: 'newUser', password: 'password123' }, session: {} };
         const res = { redirect: sinon.stub() };
-
-        // Stubbing getUser to simulate a non-existing user
         getUserStub.resolves(null);
-
-        // Stubbing addUser to simulate successful user creation
         addUserStub.resolves({ id: 'fakeUserId' });
 
         // Call the function
@@ -38,47 +33,69 @@ describe('signup function', () => {
     });
 
     it('should not signup a new user if user already exists', async () => {
-        // Mocking the request and response objects
         const req = { body: { username: 'existingUser', password: 'password123' }, session: {} };
         const res = { redirect: sinon.stub() };
-
-        // Stubbing getUser to simulate an existing user
         getUserStub.resolves({});
-
-        // Call the function
         const result = await auth.signup(req, res);
-
-        // Assertions
         expect(userManager.getUser.calledOnceWith('existingUser')).toBe(true);
-        expect(result).toBe(false); // Expecting the function to return false if user already exists
-        expect(res.redirect.called).toBe(false); // No redirect should occur
+        expect(result).toBe(false);
+        expect(res.redirect.called).toBe(false);
     });
 
     it('should handle errors if getUser function fails', async () => {
-        // Mocking the request and response objects
         const req = { body: { username: 'newUser', password: 'password123' }, session: {} };
         const res = { redirect: sinon.stub() };
-
-        // Stubbing getUser to simulate an error
         getUserStub.rejects(new Error('getUser failed'));
-
-        // Call the function
         const result = await auth.signup(req, res);
-
-        // Assertions
-        expect(result).toBe(false); // Expecting the function to return false if an error occurs
-        expect(res.redirect.called).toBe(false); // No redirect should occur
+        expect(result).toBe(false);
+        expect(res.redirect.called).toBe(false);
     });
-    it('should handle invalid input if username or password is missing', async () => {               //results in an error when an aspect is missing. on actual webapp, it doesnt't allow it. May have something to do with firebase rules
-        // Mocking the request and response objects with missing fields
+
+    it('should handle invalid input if username or password is missing', async () => {
         const req = { body: { username: 'missingPassword' }, session: {} };
         const res = { redirect: sinon.stub() };
-
-        // Call the function
         const result = await auth.signup(req, res);
+        expect(result).toBe(false);
+        expect(res.redirect.called).toBe(false);
+    });
+});
 
-        // Assertions
-        expect(result).toBe(false); // Expecting the function to return false for invalid input
-        expect(res.redirect.called).toBe(false); // No redirect should occur
+describe('signin function', () => {
+    let getUserStub;
+    let req, res;
+
+    beforeEach(() => {
+        getUserStub = sinon.stub(userManager, 'getUser');
+        req = { body: {}, session: {} };
+        res = { redirect: sinon.stub() };
+    });
+
+    afterEach(() => {
+        getUserStub.restore();
+    });
+
+    it('should sign in a user with valid credentials and redirect to the browse page', async () => {
+        const username = 'validUser';
+        const password = 'validPassword';
+        const user = { id: 'falseUserId' };
+        getUserStub.resolves(user);
+        req.body.username = username;
+        req.body.password = password;
+        await auth.signin(req, res);
+        expect(userManager.getUser.calledOnceWith(username, password)).toBe(true);
+        expect(req.session.userId).toBe(user.id);
+        expect(res.redirect.calledOnceWith('/browse')).toBe(true);
+    });
+
+    it('should not sign in a user with invalid credentials', async () => {
+        const username = 'invalidUser';
+        const password = 'invalidPassword';
+        getUserStub.resolves(null);
+        req.body.username = username;
+        req.body.password = password;
+        const result = await auth.signin(req, res);
+        expect(userManager.getUser.calledOnceWith(username, password)).toBe(true);
+        expect(result).toBe(false);
+        expect(res.redirect.called).toBe(false);
     });
 });
